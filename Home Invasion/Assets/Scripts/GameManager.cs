@@ -3,10 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour {
 
 	public static GameManager instance = null;
+
+	private GameObject[] spawnZones;
+
+	public GameObject thiefPrefab;
+	public float spawnRate;
+	private float spawnTimer = 0f;
 
 	public GameObject tempItem;
 	public bool doingSetup;
@@ -38,7 +45,7 @@ public class GameManager : MonoBehaviour {
 
 	void InitGame() {
 		doingSetup = true;
-		
+
 		items = new List<Item>();
 		itemsHolder = new GameObject("Items").transform;
 		thievesHolder = new GameObject("Thieves").transform;
@@ -51,6 +58,9 @@ public class GameManager : MonoBehaviour {
 		foreach( Item item in items ) {
 			print(item.name + " " + item.value);
 		}
+
+		// Spawn zones
+		spawnZones = GameObject.FindGameObjectsWithTag("Respawn");
 
 		doingSetup = false;
 	}
@@ -78,6 +88,17 @@ public class GameManager : MonoBehaviour {
 		if( doingSetup )
 			return;
 
-		// ...
+		spawnTimer += Time.deltaTime;
+		if( spawnTimer >= spawnRate ) {
+			spawnTimer = 0f;
+
+			// Select spawn zone
+			int randomIndex = Random.Range(0, spawnZones.Length);
+			GameObject spawnZone = spawnZones[randomIndex];
+			Vector3 spawnPosition = spawnZone.transform.position;
+
+			// Spawn thief
+			Instantiate(thiefPrefab, spawnPosition, Quaternion.identity);
+		}
 	}
 }
