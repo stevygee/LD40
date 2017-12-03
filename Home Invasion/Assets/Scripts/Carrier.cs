@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Carrier : MonoBehaviour {
 
-	private GameObject item;
+	private GameManager gameMgr;
+	private Item item;
 	private float timer = 0f;
 
 	public float reach;
@@ -12,13 +13,21 @@ public class Carrier : MonoBehaviour {
 	public float pickUpTime;
 	public bool pickingUp = false;
 
-	public void PickUp(GameObject newItem) {
-		if( !hasItem && !pickingUp ) {
-			item = newItem;
-			// TODO: Timer
+	public void Start() {
+		gameMgr = GameManager.instance;
+	}
 
-			item.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
+	public void PickUp(Item newItem) {
+		if( !hasItem ) {
+			item = newItem;
+
+			item.obj.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
 			//item.GetComponent<BoxCollider2D>().isTrigger = true;
+
+			print("Picked up " + item.name);
+
+			gameMgr.items.Remove(item);
+			gameMgr.PrintItems();
 
 			pickingUp = true;
 			hasItem = true;
@@ -26,7 +35,11 @@ public class Carrier : MonoBehaviour {
 	}
 
 	public void Drop() {
-		item.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+		item.obj.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+
+		gameMgr.items.Add(item);
+		gameMgr.SortItems();
+
 		item = null;
 		hasItem = false;
 	}
@@ -44,9 +57,9 @@ public class Carrier : MonoBehaviour {
 			float angle = timer / pickUpTime * Mathf.PI * 2 * 0.25f;
 			float x = transform.position.x + Mathf.Cos(angle) * radius;
 			float y = transform.position.y + Mathf.Sin(angle) * radius;
-			item.transform.SetPositionAndRotation(new Vector3(x, y, 0), Quaternion.identity);
+			item.obj.transform.SetPositionAndRotation(new Vector3(x, y, 0), Quaternion.identity);
 		} else if( hasItem ) {
-			item.transform.SetPositionAndRotation(transform.position + new Vector3(0, 1.25f, 0), Quaternion.identity);
+			item.obj.transform.SetPositionAndRotation(transform.position + new Vector3(0, 1.25f, 0), Quaternion.identity);
 		}
 	}
 }

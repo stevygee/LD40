@@ -8,6 +8,7 @@ public class ThiefAI : MonoBehaviour {
 	private GameManager gameMgr;
 	private Rigidbody2D rb;
 	private Animator aiState;
+	private Item wantedItem;
 	private Vector3 relativeItemPos;
 
 	private int searchingStateHash = Animator.StringToHash("Base Layer.Searching");
@@ -39,22 +40,18 @@ public class ThiefAI : MonoBehaviour {
 			return;
 
 		// Choose closest and most valuable item
-		Item wantedItem = gameMgr.GetMostValuableItem();
-		if( wantedItem == null )
-			return;
+		if( !carrier.hasItem ) {
+			wantedItem = gameMgr.GetMostValuableItem();
+			if( wantedItem == null )
+				return;
 
-		relativeItemPos = wantedItem.obj.transform.InverseTransformPoint(transform.position);
+			relativeItemPos = wantedItem.obj.transform.InverseTransformPoint(transform.position);
+		}
 
 		// State changes
 		// ---
-		if( relativeItemPos.magnitude <= carrier.reach ) {
-			aiState.SetTrigger(itemInRangeHash);
-		}
-
-		if( carrier.hasItem && !carrier.pickingUp ) {
-			aiState.SetTrigger(hasItemHash);
-		}
-
+		aiState.SetBool(hasItemHash, carrier.hasItem);
+		aiState.SetBool(itemInRangeHash, relativeItemPos.magnitude <= carrier.reach);
 		// TODO: Scare
 
 		// State specific behaviour
@@ -62,7 +59,7 @@ public class ThiefAI : MonoBehaviour {
 
 		if( IsAIState(pickingUpItemStateHash) ) {
 			// Pick up
-			carrier.PickUp(wantedItem.obj);
+			carrier.PickUp(wantedItem);
 		}
 	}
 
@@ -71,12 +68,12 @@ public class ThiefAI : MonoBehaviour {
 		// ---
 		float moveHorizontal = 0f;
 
-		if( IsAIState(searchingStateHash) ) {
+		if( IsAIState(searchingStateHash) && wantedItem != null ) {
 			// Move towards item
 			moveHorizontal = (relativeItemPos.x > 0) ? -1 : 1;
 		} else if( IsAIState(leavingStateHash) || IsAIState(fleeingStateHash) ) {
 			// TODO: Move to closest exit
-			moveHorizontal = true ? -1 : 1;
+			moveHorizontal = (gameMgr.GetClosestRelativeSpawnPosition(transform.position).x > 0) ? -1 : 1;
 		}
 
 		Vector3 movement = new Vector3(moveHorizontal, 0f, 0f);

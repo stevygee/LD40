@@ -55,14 +55,21 @@ public class GameManager : MonoBehaviour {
 		AddItem(tempItem, new Vector3(2, 1, 0), "Car", 500000);
 		AddItem(tempItem, new Vector3(5, 4, 0), "TV", 5000);
 
-		foreach( Item item in items ) {
-			print(item.name + " " + item.value);
-		}
+		PrintItems();
 
 		// Spawn zones
 		spawnZones = GameObject.FindGameObjectsWithTag("Respawn");
 
 		doingSetup = false;
+	}
+
+	public void PrintItems() {
+		print("Items:");
+		print("---");
+		foreach( Item item in items ) {
+			print(item.name + " " + item.value);
+		}
+		print("---");
 	}
 
 	public void AddItem(GameObject prefab, Vector3 position, string name, int value) {
@@ -72,6 +79,10 @@ public class GameManager : MonoBehaviour {
 		Item newItem = new Item(instance, name, value);
 
 		items.Add(newItem);
+		SortItems();
+	}
+
+	public void SortItems() {
 		items.Sort();
 		items.Reverse();
 	}
@@ -82,6 +93,20 @@ public class GameManager : MonoBehaviour {
 		} else {
 			return null;
 		}
+	}
+
+	public Vector3 GetClosestRelativeSpawnPosition(Vector3 position) {
+		float shortestDistance = -1;
+		Vector3 closestRelativePos = new Vector3(-99, 0, 0);
+		foreach( GameObject spawnZone in spawnZones ) {
+			Vector3 relativePos = spawnZone.transform.InverseTransformPoint(position);
+			float distance = relativePos.magnitude;
+			if( distance < shortestDistance || distance == -1 ) {
+				shortestDistance = distance;
+				closestRelativePos = relativePos;
+			}
+		}
+		return closestRelativePos;
 	}
 
 	void Update() {
