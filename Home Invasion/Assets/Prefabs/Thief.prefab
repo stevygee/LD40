@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 114940760240408656}
   - component: {fileID: 114156114302442932}
   - component: {fileID: 95237672825096166}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Thief
   m_TagString: Untagged
   m_Icon: {fileID: 0}
