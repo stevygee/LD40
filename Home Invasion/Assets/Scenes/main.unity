@@ -224,6 +224,7 @@ GameObject:
   - component: {fileID: 723206360}
   - component: {fileID: 723206359}
   - component: {fileID: 723206358}
+  - component: {fileID: 723206361}
   m_Layer: 0
   m_Name: Thief
   m_TagString: Untagged
@@ -358,6 +359,23 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!95 &723206361
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 723206354}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: cb31865b7588cc440945425800f501b0, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!1 &1670476595
 GameObject:
   m_ObjectHideFlags: 0
