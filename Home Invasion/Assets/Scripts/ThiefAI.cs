@@ -51,7 +51,7 @@ public class ThiefAI : MonoBehaviour {
 			aiState.SetTrigger(itemInRangeHash);
 		}
 
-		if( carrier.hasItem ) {
+		if( carrier.hasItem && !carrier.pickingUp ) {
 			aiState.SetTrigger(hasItemHash);
 		}
 
@@ -74,7 +74,6 @@ public class ThiefAI : MonoBehaviour {
 		if( IsAIState(searchingStateHash) ) {
 			// Move towards item
 			moveHorizontal = (relativeItemPos.x > 0) ? -1 : 1;
-			print("Searching");
 		} else if( IsAIState(leavingStateHash) || IsAIState(fleeingStateHash) ) {
 			// TODO: Move to closest exit
 			moveHorizontal = true ? -1 : 1;
