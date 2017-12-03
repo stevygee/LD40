@@ -12,6 +12,9 @@ public class GameManager : MonoBehaviour {
 	public bool doingSetup;
 	public List<Item> items;
 
+	private Transform itemsHolder;
+	private Transform thievesHolder;
+
 	private void Awake() {
 		if( instance == null )
 			instance = this;
@@ -37,6 +40,8 @@ public class GameManager : MonoBehaviour {
 		doingSetup = true;
 		
 		items = new List<Item>();
+		itemsHolder = new GameObject("Items").transform;
+		thievesHolder = new GameObject("Thieves").transform;
 
 		// Add initial items
 		AddItem(tempItem, new Vector3(3, 2, 0), "Couch", 200);
@@ -51,12 +56,22 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void AddItem(GameObject prefab, Vector3 position, string name, int value) {
-		GameObject obj = Instantiate(prefab, position, Quaternion.identity);
-		Item newItem = new Item(obj, name, value);
+		GameObject instance = Instantiate(prefab, position, Quaternion.identity);
+		instance.transform.SetParent(itemsHolder);
+
+		Item newItem = new Item(instance, name, value);
 
 		items.Add(newItem);
 		items.Sort();
 		items.Reverse();
+	}
+
+	public Item GetMostValuableItem() {
+		if( items.Count > 0 ) {
+			return items[0];
+		} else {
+			return null;
+		}
 	}
 
 	void Update() {

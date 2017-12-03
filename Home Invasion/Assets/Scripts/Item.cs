@@ -6,9 +6,7 @@ using UnityEngine;
 public class Item : IComparable<Item> {
 	public string name;
 	public int value;
-
-	private GameObject obj;
-	private bool initialized = false;
+	public GameObject obj;
 
 	public Item(GameObject obj, string name, int value) {
 		this.obj = obj;

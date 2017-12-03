@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class Carrier : MonoBehaviour {
 
-	GameObject item;
+	private GameObject item;
 
-	void PickUp(GameObject newItem) {
+	public float reach;
+
+	public void PickUp(GameObject newItem) {
 		if( !item ) {
 			item = newItem;
+			print("Picked up item!");
 		}
 	}
 
-	void Drop() {
+	public void Drop() {
 		item = null;
 	}
 }
