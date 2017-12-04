@@ -22,12 +22,11 @@ public class Carrier : MonoBehaviour {
 			item = newItem;
 
 			item.obj.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
-			//item.GetComponent<BoxCollider2D>().isTrigger = true;
 
 			print("Picked up " + item.name);
 
 			gameMgr.items.Remove(item);
-			gameMgr.PrintItems();
+			//gameMgr.PrintItems();
 
 			pickingUp = true;
 			hasItem = true;
@@ -42,6 +41,10 @@ public class Carrier : MonoBehaviour {
 
 		item = null;
 		hasItem = false;
+	}
+
+	public void RemoveItemFromScene() {
+		Destroy(item.obj);
 	}
 
 	public void Update() {

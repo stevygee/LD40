@@ -51,13 +51,15 @@ public class GameManager : MonoBehaviour {
 		thievesHolder = new GameObject("Thieves").transform;
 
 		// Add initial items
-		AddItem(tempItem, new Vector3(3, 2, 0), "Couch", 200);
-		AddItem(tempItem, new Vector3(2, 1, 0), "Car", 500000);
-		AddItem(tempItem, new Vector3(5, 4, 0), "TV", 5000);
+		AddItem(tempItem, new Vector3(0, 1, 0), "Vault", 1000000, true, Item.ItemType.Vault);
+		AddItem(tempItem, new Vector3(3, 2, 0), "Couch", 200, true, Item.ItemType.Furniture);
+		AddItem(tempItem, new Vector3(2, 1, 0), "Car", 500000, true, Item.ItemType.Car);
+		AddItem(tempItem, new Vector3(5, 4, 0), "TV", 5000, true, Item.ItemType.Furniture);
 
-		PrintItems();
+		//PrintItems();
 
-		// Spawn zones
+		// Spawn
+		spawnTimer = spawnRate;
 		spawnZones = GameObject.FindGameObjectsWithTag("Respawn");
 
 		doingSetup = false;
@@ -72,11 +74,11 @@ public class GameManager : MonoBehaviour {
 		print("---");
 	}
 
-	public void AddItem(GameObject prefab, Vector3 position, string name, int value) {
+	public void AddItem(GameObject prefab, Vector3 position, string name, int value, bool sellable, Item.ItemType type) {
 		GameObject instance = Instantiate(prefab, position, Quaternion.identity);
 		instance.transform.SetParent(itemsHolder);
 
-		Item newItem = new Item(instance, name, value);
+		Item newItem = new Item(instance, name, value, sellable, type);
 
 		items.Add(newItem);
 		SortItems();
@@ -123,7 +125,8 @@ public class GameManager : MonoBehaviour {
 			Vector3 spawnPosition = spawnZone.transform.position;
 
 			// Spawn thief
-			Instantiate(thiefPrefab, spawnPosition, Quaternion.identity);
+			GameObject instance = Instantiate(thiefPrefab, spawnPosition, Quaternion.identity);
+			instance.transform.SetParent(thievesHolder);
 		}
 	}
 }

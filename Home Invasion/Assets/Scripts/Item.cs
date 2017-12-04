@@ -4,14 +4,27 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Item : IComparable<Item> {
-	public string name;
-	public int value;
+	public enum ItemType {
+		None,
+		Vault,
+		Furniture,
+		Car,
+		Security
+	}
+
 	public GameObject obj;
 
-	public Item(GameObject obj, string name, int value) {
+	public string name;
+	public int value;
+	public bool sellable;
+	public ItemType type;
+
+	public Item(GameObject obj, string name, int value, bool sellable, ItemType type) {
 		this.obj = obj;
 		this.name = name;
 		this.value = value;
+		this.sellable = sellable;
+		this.type = type;
 	}
 	
 	public int CompareTo(Item other) {

@@ -80,4 +80,12 @@ public class ThiefAI : MonoBehaviour {
 
 		rb.AddForce(movement * speed);
 	}
+	
+	void OnTriggerEnter2D(Collider2D other) {
+		// Thief leaves the scene of the crime, takes item permanently
+		if( !IsAIState(searchingStateHash) && other.gameObject.tag == "Respawn" ) {
+			carrier.RemoveItemFromScene();
+			Destroy(gameObject);
+		}
+	}
 }
