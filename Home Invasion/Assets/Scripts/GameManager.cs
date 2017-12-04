@@ -8,12 +8,13 @@ using Random = UnityEngine.Random;
 public class GameManager : MonoBehaviour {
 
 	public static GameManager instance = null;
+	private UIManager uiMgr;
 
 	private GameObject[] spawnZones;
 
 	public GameObject thiefPrefab;
 	public float spawnRate;
-	private float spawnTimer = 0f;
+	private float spawnTimer;
 
 	public GameObject tempItem;
 	public bool doingSetup;
@@ -22,6 +23,8 @@ public class GameManager : MonoBehaviour {
 	private Transform itemsHolder;
 	private Transform thievesHolder;
 
+	private bool gameOver;
+
 	private void Awake() {
 		if( instance == null )
 			instance = this;
@@ -29,6 +32,8 @@ public class GameManager : MonoBehaviour {
 			Destroy(gameObject);
 
 		DontDestroyOnLoad(gameObject);
+
+		uiMgr = GetComponent<UIManager>();
 	}
 
 	void OnEnable() {
@@ -45,8 +50,11 @@ public class GameManager : MonoBehaviour {
 
 	void InitGame() {
 		doingSetup = true;
-
+		
+		spawnTimer = 0f;
+		gameOver = false;
 		items = new List<Item>();
+
 		itemsHolder = new GameObject("Items").transform;
 		thievesHolder = new GameObject("Thieves").transform;
 
@@ -61,6 +69,9 @@ public class GameManager : MonoBehaviour {
 		// Spawn
 		spawnTimer = spawnRate;
 		spawnZones = GameObject.FindGameObjectsWithTag("Respawn");
+
+		// UI
+		uiMgr.Init();
 
 		doingSetup = false;
 	}
@@ -128,5 +139,15 @@ public class GameManager : MonoBehaviour {
 			GameObject instance = Instantiate(thiefPrefab, spawnPosition, Quaternion.identity);
 			instance.transform.SetParent(thievesHolder);
 		}
+	}
+
+	public void GameOver() {
+		gameOver = true;
+		uiMgr.OpenGameOverPanel();
+	}
+
+	public void Restart() {
+		int i = SceneManager.GetActiveScene().buildIndex;
+		SceneManager.LoadScene(i);
 	}
 }

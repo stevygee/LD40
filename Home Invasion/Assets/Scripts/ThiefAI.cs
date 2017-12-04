@@ -84,6 +84,10 @@ public class ThiefAI : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D other) {
 		// Thief leaves the scene of the crime, takes item permanently
 		if( !IsAIState(searchingStateHash) && other.gameObject.tag == "Respawn" ) {
+			if( carrier.GetItemType() == Item.ItemType.Vault ) {
+				gameMgr.GameOver();
+			}
+
 			carrier.RemoveItemFromScene();
 			Destroy(gameObject);
 		}

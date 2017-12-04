@@ -23,7 +23,7 @@ public class Carrier : MonoBehaviour {
 
 			item.obj.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
 
-			print("Picked up " + item.name);
+			//print("Picked up " + item.name);
 
 			gameMgr.items.Remove(item);
 			//gameMgr.PrintItems();
@@ -45,6 +45,10 @@ public class Carrier : MonoBehaviour {
 
 	public void RemoveItemFromScene() {
 		Destroy(item.obj);
+	}
+
+	public Item.ItemType GetItemType() {
+		return hasItem ? item.type : Item.ItemType.None;
 	}
 
 	public void Update() {
