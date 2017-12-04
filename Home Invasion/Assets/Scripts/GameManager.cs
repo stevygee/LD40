@@ -68,9 +68,9 @@ public class GameManager : MonoBehaviour {
 
 		// Add initial items
 		AddItem(tempItem, new Vector3(0, 1, 0), "Vault", 100000, false, Item.ItemType.Vault);
-		AddItem(tempItem, new Vector3(3, 2, 0), "Couch", 200, true, Item.ItemType.Furniture);
+		/*AddItem(tempItem, new Vector3(3, 2, 0), "Couch", 200, true, Item.ItemType.Furniture);
 		AddItem(tempItem, new Vector3(2, 1, 0), "Car", 500000, true, Item.ItemType.Car);
-		AddItem(tempItem, new Vector3(5, 4, 0), "TV", 5000, true, Item.ItemType.Furniture);
+		AddItem(tempItem, new Vector3(5, 4, 0), "TV", 5000, true, Item.ItemType.Furniture);*/
 
 		//PrintItems();
 
@@ -151,6 +151,13 @@ public class GameManager : MonoBehaviour {
 	void Update() {
 		if( doingSetup )
 			return;
+
+		// Spawn rate
+		float min = 1;
+		float max = 40;
+		float log = Mathf.Log(marketWorth, max);
+		log = (log <= 0) ? 1 : log;
+		spawnRate = (max / log) + min - 1;
 
 		// Spawn thieves
 		spawnTimer += Time.deltaTime;
