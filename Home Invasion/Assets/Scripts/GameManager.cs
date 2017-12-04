@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour {
 	public static GameManager instance = null;
 	private UIManager uiMgr;
 
-	private int marketWorth;
+	public int marketWorth;
 
 	private GameObject[] spawnZones;
 
@@ -145,7 +145,6 @@ public class GameManager : MonoBehaviour {
 		foreach( Item item in items ) {
 			marketWorth += item.value;
 		}
-		print("Market worth: " + marketWorth);
 	}
 
 	void Update() {

@@ -8,6 +8,8 @@ public class UIManager : MonoBehaviour {
 	public static UIManager instance = null;
 	private GameManager gameMgr;
 
+	private Text marketWorthText; 
+
 	public GameObject valueText;
 
 	private GameObject canvas;
@@ -25,6 +27,8 @@ public class UIManager : MonoBehaviour {
 
 	public void Init() {
 		canvas = GameObject.Find("Canvas");
+
+		marketWorthText = GameObject.Find("MarketWorthText").GetComponent<Text>();
 
 		// Game over panel
 		gameOverPanel = GameObject.Find("GameOverPanel");
@@ -51,6 +55,8 @@ public class UIManager : MonoBehaviour {
 	void Update() {
 		if( gameMgr.doingSetup )
 			return;
+
+		marketWorthText.text = "Total market worth: $ " + gameMgr.marketWorth;
 
 		// Update both picked up and untouched items
 		UpdateValueUIs(gameMgr.items);
