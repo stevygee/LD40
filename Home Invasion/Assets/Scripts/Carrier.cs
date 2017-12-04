@@ -48,8 +48,7 @@ public class Carrier : MonoBehaviour {
 	}
 
 	public void RemoveItemFromScene() {
-		Destroy(item.uiObj);
-		Destroy(item.obj);
+		gameMgr.RemoveItemFromScene(item);
 	}
 
 	public Item.ItemType GetItemType() {

@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour {
 	public static GameManager instance = null;
 	private UIManager uiMgr;
 
+	private int marketWorth;
+
 	private GameObject[] spawnZones;
 
 	public GameObject thiefPrefab;
@@ -51,7 +53,8 @@ public class GameManager : MonoBehaviour {
 
 	void InitGame() {
 		doingSetup = true;
-		
+
+		marketWorth = 0;
 		spawnTimer = 0f;
 		gameOver = false;
 		items = new List<Item>();
@@ -64,7 +67,7 @@ public class GameManager : MonoBehaviour {
 		uiMgr.Init();
 
 		// Add initial items
-		AddItem(tempItem, new Vector3(0, 1, 0), "Vault", 1000000, false, Item.ItemType.Vault);
+		AddItem(tempItem, new Vector3(0, 1, 0), "Vault", 100000, false, Item.ItemType.Vault);
 		AddItem(tempItem, new Vector3(3, 2, 0), "Couch", 200, true, Item.ItemType.Furniture);
 		AddItem(tempItem, new Vector3(2, 1, 0), "Car", 500000, true, Item.ItemType.Car);
 		AddItem(tempItem, new Vector3(5, 4, 0), "TV", 5000, true, Item.ItemType.Furniture);
@@ -97,6 +100,8 @@ public class GameManager : MonoBehaviour {
 
 		items.Add(newItem);
 		SortItems();
+
+		CalculateMarketWorth();
 	}
 
 	public void SortItems() {
@@ -126,6 +131,23 @@ public class GameManager : MonoBehaviour {
 		return closestRelativePos;
 	}
 
+	public void RemoveItemFromScene(Item item) {
+		Destroy(item.uiObj);
+		Destroy(item.obj);
+		items.Remove(item);
+		pickedItems.Remove(item);
+
+		CalculateMarketWorth();
+	}
+
+	private void CalculateMarketWorth() {
+		marketWorth = 0;
+		foreach( Item item in items ) {
+			marketWorth += item.value;
+		}
+		print("Market worth: " + marketWorth);
+	}
+
 	void Update() {
 		if( doingSetup )
 			return;
@@ -152,7 +174,7 @@ public class GameManager : MonoBehaviour {
 			Vector3 mouseWorldPos = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, cam.nearClipPlane));
 			mouseWorldPos.z = 0f;
 
-			AddItem(tempItem, mouseWorldPos, "New Item", 1000000, true, Item.ItemType.Car);
+			AddItem(tempItem, mouseWorldPos, "New Item", 5000, true, Item.ItemType.Car);
 		}
 	}
 
