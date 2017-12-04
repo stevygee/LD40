@@ -52,6 +52,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 978b864175398994d8b4973a456ce561, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  marketWorth: 0
+  startCash: 1000000
+  minSalary: 10000
+  maxSalary: 15000
+  moneyRate: 3
   thiefPrefab: {fileID: 1404738303110728, guid: 610a42fa13756964e9e600018f8f1945,
     type: 2}
   spawnRate: 3

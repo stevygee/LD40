@@ -16,11 +16,11 @@ public class Item : IComparable<Item> {
 	public GameObject uiObj;
 
 	public string name;
-	public int value;
+	public float value;
 	public bool sellable;
 	public ItemType type;
 
-	public Item(GameObject obj, GameObject uiObj, string name, int value, bool sellable, ItemType type) {
+	public Item(GameObject obj, GameObject uiObj, string name, float value, bool sellable, ItemType type) {
 		this.obj = obj;
 		this.uiObj = uiObj;
 		this.name = name;
@@ -35,6 +35,6 @@ public class Item : IComparable<Item> {
 		}
 
 		// Return the difference in value
-		return value - other.value;
+		return (int)(value - other.value);
 	}
 }

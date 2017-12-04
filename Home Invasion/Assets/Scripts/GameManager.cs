@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour {
@@ -10,10 +11,16 @@ public class GameManager : MonoBehaviour {
 	public static GameManager instance = null;
 	private UIManager uiMgr;
 
-	public int marketWorth;
+	public float marketWorth;
+	private Item vault;
 
+	public int startCash;
+	public int minSalary;
+	public int maxSalary;
+	public float moneyRate;
+	private float moneyTimer;
+	
 	private GameObject[] spawnZones;
-
 	public GameObject thiefPrefab;
 	public float spawnRate;
 	private float spawnTimer;
@@ -55,6 +62,7 @@ public class GameManager : MonoBehaviour {
 		doingSetup = true;
 
 		marketWorth = 0;
+		moneyTimer = 0f;
 		spawnTimer = 0f;
 		gameOver = false;
 		items = new List<Item>();
@@ -67,7 +75,7 @@ public class GameManager : MonoBehaviour {
 		uiMgr.Init();
 
 		// Add initial items
-		AddItem(tempItem, new Vector3(0, 1, 0), "Vault", 100000, false, Item.ItemType.Vault);
+		vault = AddItem(tempItem, new Vector3(0, 1, 0), "Vault", startCash, false, Item.ItemType.Vault);
 		/*AddItem(tempItem, new Vector3(3, 2, 0), "Couch", 200, true, Item.ItemType.Furniture);
 		AddItem(tempItem, new Vector3(2, 1, 0), "Car", 500000, true, Item.ItemType.Car);
 		AddItem(tempItem, new Vector3(5, 4, 0), "TV", 5000, true, Item.ItemType.Furniture);*/
@@ -90,7 +98,7 @@ public class GameManager : MonoBehaviour {
 		print("---");
 	}
 
-	public void AddItem(GameObject prefab, Vector3 position, string name, int value, bool sellable, Item.ItemType type) {
+	public Item AddItem(GameObject prefab, Vector3 position, string name, float value, bool sellable, Item.ItemType type) {
 		GameObject instance = Instantiate(prefab, position, Quaternion.identity);
 		instance.transform.SetParent(itemsHolder);
 
@@ -102,6 +110,8 @@ public class GameManager : MonoBehaviour {
 		SortItems();
 
 		CalculateMarketWorth();
+
+		return newItem;
 	}
 
 	public void SortItems() {
@@ -147,9 +157,31 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
+	public bool SpendMoney(float amount) {
+		if( amount <= vault.value ) {
+			vault.value -= amount;
+			return true;
+		}
+
+		return false;
+	}
+
+	public void ReceiveMoney(float amount) {
+		vault.value += amount;
+	}
+
 	void Update() {
 		if( doingSetup )
 			return;
+
+		// Make money
+		moneyTimer += Time.deltaTime;
+		if( moneyTimer >= moneyRate ) {
+			moneyTimer = 0f;
+			float salary = Random.Range(minSalary, maxSalary);
+			ReceiveMoney(salary);
+			CalculateMarketWorth();
+		}
 
 		// Spawn rate
 		float min = 1;
@@ -174,13 +206,17 @@ public class GameManager : MonoBehaviour {
 		}
 
 		// Add item
-		if( Input.GetMouseButtonDown(0) ) {
+		bool mouseOverUI = EventSystem.current.IsPointerOverGameObject();
+		if( Input.GetMouseButtonDown(0) && !mouseOverUI && !gameOver ) {
 			// Mouse position to world position
 			Camera cam = Camera.main;
 			Vector3 mouseWorldPos = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, cam.nearClipPlane));
 			mouseWorldPos.z = 0f;
 
-			AddItem(tempItem, mouseWorldPos, "New Item", 5000, true, Item.ItemType.Car);
+			if( SpendMoney(5000) ) {
+				float value = 5000 * 0.5f; // Convert store price to market value after buying e.g. loss of value
+				AddItem(tempItem, mouseWorldPos, "New Item", value, true, Item.ItemType.Car);
+			}
 		}
 	}
 
