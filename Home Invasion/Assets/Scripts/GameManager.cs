@@ -12,9 +12,9 @@ public class GameManager : MonoBehaviour {
 	private UIManager uiMgr;
 
 	public float marketWorth;
-	private Item vault;
+	public Item safePrefab;
+	private Item safe;
 
-	public int startCash;
 	public int minSalary;
 	public int maxSalary;
 	public float moneyRate;
@@ -75,10 +75,7 @@ public class GameManager : MonoBehaviour {
 		uiMgr.Init();
 
 		// Add initial items
-		vault = AddItem(tempItem, new Vector3(0, 1, 0), "Vault", startCash, false, Item.ItemType.Vault);
-		/*AddItem(tempItem, new Vector3(3, 2, 0), "Couch", 200, true, Item.ItemType.Furniture);
-		AddItem(tempItem, new Vector3(2, 1, 0), "Car", 500000, true, Item.ItemType.Car);
-		AddItem(tempItem, new Vector3(5, 4, 0), "TV", 5000, true, Item.ItemType.Furniture);*/
+		safe = AddItem(safePrefab, new Vector3(0, 1, 0), 1f);
 
 		//PrintItems();
 
@@ -98,20 +95,21 @@ public class GameManager : MonoBehaviour {
 		print("---");
 	}
 
-	public Item AddItem(GameObject prefab, Vector3 position, string name, float value, bool sellable, Item.ItemType type) {
-		GameObject instance = Instantiate(prefab, position, Quaternion.identity);
-		instance.transform.SetParent(itemsHolder);
+	public Item AddItem(Item prefab, Vector3 position, float valueModifier) {
+		Item item = prefab.Copy(); // Make a copy before modifying
+		item.value = item.value * valueModifier; // Convert store price to market value after buying e.g. loss of value
 
-		GameObject textInstance = uiMgr.AddValueUI();
+		item.obj = Instantiate(item.obj, position, Quaternion.identity);
+		item.obj.transform.SetParent(itemsHolder);
 
-		Item newItem = new Item(instance, textInstance, name, value, sellable, type);
-
-		items.Add(newItem);
+		item.uiObj = uiMgr.AddValueUI();
+		
+		items.Add(item);
 		SortItems();
 
 		CalculateMarketWorth();
 
-		return newItem;
+		return item;
 	}
 
 	public void SortItems() {
@@ -158,8 +156,8 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public bool SpendMoney(float amount) {
-		if( amount <= vault.value ) {
-			vault.value -= amount;
+		if( amount <= safe.value ) {
+			safe.value -= amount;
 			return true;
 		}
 
@@ -167,7 +165,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void ReceiveMoney(float amount) {
-		vault.value += amount;
+		safe.value += amount;
 	}
 
 	void Update() {
@@ -204,24 +202,26 @@ public class GameManager : MonoBehaviour {
 			GameObject instance = Instantiate(thiefPrefab, spawnPosition, Quaternion.identity);
 			instance.transform.SetParent(thievesHolder);
 		}
-
+		
 		// Add item
 		bool mouseOverUI = EventSystem.current.IsPointerOverGameObject();
-		if( Input.GetMouseButtonDown(0) && !mouseOverUI && !gameOver ) {
+		Item newItem = uiMgr.GetActiveItem();
+
+		if( newItem != null && Input.GetMouseButtonDown(0) && !mouseOverUI && !gameOver ) {
 			// Mouse position to world position
 			Camera cam = Camera.main;
 			Vector3 mouseWorldPos = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, cam.nearClipPlane));
 			mouseWorldPos.z = 0f;
 
-			if( SpendMoney(5000) ) {
-				float value = 5000 * 0.5f; // Convert store price to market value after buying e.g. loss of value
-				AddItem(tempItem, mouseWorldPos, "New Item", value, true, Item.ItemType.Car);
+			if( SpendMoney(newItem.value) ) {
+				AddItem(newItem, mouseWorldPos, 0.5f);
 			}
 		}
 	}
 
 	public void GameOver() {
 		gameOver = true;
+		uiMgr.CloseShop();
 		uiMgr.OpenGameOverPanel();
 	}
 

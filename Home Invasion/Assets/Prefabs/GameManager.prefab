@@ -53,7 +53,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   marketWorth: 0
-  startCash: 1000000
+  safePrefab:
+    obj: {fileID: 1628350731576880, guid: f5e7a043986f8e3428e86e9a3b6ba0f3, type: 2}
+    uiObj: {fileID: 0}
+    name: Safe
+    value: 100000
+    sellable: 0
+    type: 1
   minSalary: 10000
   maxSalary: 15000
   moneyRate: 3
@@ -62,6 +68,8 @@ MonoBehaviour:
   spawnRate: 3
   tempItem: {fileID: 1628350731576880, guid: f5e7a043986f8e3428e86e9a3b6ba0f3, type: 2}
   doingSetup: 0
+  items: []
+  pickedItems: []
 --- !u!114 &114894739394624102
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -74,3 +82,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   valueText: {fileID: 1337212753984888, guid: c236b654243d0e047a3ee42eb8c30e0b, type: 2}
+  shopItems: []

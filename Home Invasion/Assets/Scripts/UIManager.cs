@@ -9,13 +9,20 @@ public class UIManager : MonoBehaviour {
 	private GameManager gameMgr;
 
 	private Text marketWorthText; 
-
 	public GameObject valueText;
+
+	private GameObject shopPanel;
+	private Button openShopPanelButton;
+	private Button closeShopPanelButton;
 
 	private GameObject canvas;
 	private GameObject gameOverPanel;
 	private Button restartButton;
 
+	public List<Item> shopItems;
+
+	private Item activeItem;
+	
 	private void Awake() {
 		if( instance == null )
 			instance = this;
@@ -28,20 +35,41 @@ public class UIManager : MonoBehaviour {
 	public void Init() {
 		canvas = GameObject.Find("Canvas");
 
+		activeItem = null;
+
+		// Always visible
 		marketWorthText = GameObject.Find("MarketWorthText").GetComponent<Text>();
+		openShopPanelButton = GameObject.Find("OpenShopPanelButton").GetComponent<Button>();
+		openShopPanelButton.onClick.AddListener(OpenShop);
+
+		// Shop panel
+		shopPanel = GameObject.Find("ShopPanel");
+		closeShopPanelButton = GameObject.Find("ShopPanel/CloseButton").GetComponent<Button>();
+		closeShopPanelButton.onClick.AddListener(CloseShop);
+		shopPanel.SetActive(false);
 
 		// Game over panel
 		gameOverPanel = GameObject.Find("GameOverPanel");
 		restartButton = GameObject.Find("GameOverPanel/RestartButton").GetComponent<Button>();
-		restartButton.onClick.AddListener(RestartButtonClick);
+		restartButton.onClick.AddListener(RestartButton);
 		gameOverPanel.SetActive(false);
+	}
+
+	public void OpenShop() {
+		shopPanel.SetActive(true);
+		openShopPanelButton.interactable = false;
+	}
+
+	public void CloseShop() {
+		shopPanel.SetActive(false);
+		openShopPanelButton.interactable = true;
 	}
 
 	public void OpenGameOverPanel() {
 		gameOverPanel.SetActive(true);
 	}
 
-	private void RestartButtonClick() {
+	private void RestartButton() {
 		gameMgr.Restart();
 	}
 
@@ -50,6 +78,14 @@ public class UIManager : MonoBehaviour {
 		GameObject textInstance = Instantiate(valueText, new Vector3(0, 0, 0), Quaternion.identity);
 		textInstance.transform.SetParent(canvas.transform);
 		return textInstance;
+	}
+
+	public void SetActiveItem(Item item) {
+		activeItem = item;
+	}
+
+	public Item GetActiveItem() {
+		return (activeItem == null) ? null : activeItem.Copy();
 	}
 
 	void Update() {

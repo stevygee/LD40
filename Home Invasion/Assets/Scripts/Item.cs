@@ -3,10 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class Item : IComparable<Item> {
 	public enum ItemType {
 		None,
-		Vault,
+		Safe,
 		Furniture,
 		Car,
 		Security
@@ -36,5 +37,10 @@ public class Item : IComparable<Item> {
 
 		// Return the difference in value
 		return (int)(value - other.value);
+	}
+
+	public Item Copy() {
+		Item copy = new Item(this.obj, this.uiObj, this.name, this.value, this.sellable, this.type);
+		return copy;
 	}
 }
