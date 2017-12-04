@@ -22,6 +22,7 @@ public class Carrier : MonoBehaviour {
 			item = newItem;
 
 			item.obj.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;
+			item.obj.GetComponent<BoxCollider2D>().isTrigger = true;
 
 			//print("Picked up " + item.name);
 
@@ -35,6 +36,7 @@ public class Carrier : MonoBehaviour {
 
 	public void Drop() {
 		item.obj.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+		item.obj.GetComponent<BoxCollider2D>().isTrigger = false;
 
 		gameMgr.items.Add(item);
 		gameMgr.SortItems();

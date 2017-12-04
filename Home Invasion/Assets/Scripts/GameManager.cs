@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour {
 		thievesHolder = new GameObject("Thieves").transform;
 
 		// Add initial items
-		AddItem(tempItem, new Vector3(0, 1, 0), "Vault", 1000000, true, Item.ItemType.Vault);
+		AddItem(tempItem, new Vector3(0, 1, 0), "Vault", 1000000, false, Item.ItemType.Vault);
 		AddItem(tempItem, new Vector3(3, 2, 0), "Couch", 200, true, Item.ItemType.Furniture);
 		AddItem(tempItem, new Vector3(2, 1, 0), "Car", 500000, true, Item.ItemType.Car);
 		AddItem(tempItem, new Vector3(5, 4, 0), "TV", 5000, true, Item.ItemType.Furniture);
@@ -126,6 +126,7 @@ public class GameManager : MonoBehaviour {
 		if( doingSetup )
 			return;
 
+		// Spawn thieves
 		spawnTimer += Time.deltaTime;
 		if( spawnTimer >= spawnRate ) {
 			spawnTimer = 0f;
@@ -138,6 +139,16 @@ public class GameManager : MonoBehaviour {
 			// Spawn thief
 			GameObject instance = Instantiate(thiefPrefab, spawnPosition, Quaternion.identity);
 			instance.transform.SetParent(thievesHolder);
+		}
+
+		// Add item
+		if( Input.GetMouseButtonDown(0) ) {
+			// Mouse position to world position
+			Camera cam = Camera.main;
+			Vector3 mouseWorldPos = cam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, cam.nearClipPlane));
+			mouseWorldPos.z = 0f;
+
+			AddItem(tempItem, mouseWorldPos, "New Item", 1000000, true, Item.ItemType.Car);
 		}
 	}
 
