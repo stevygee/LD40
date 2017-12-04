@@ -13,14 +13,16 @@ public class Item : IComparable<Item> {
 	}
 
 	public GameObject obj;
+	public GameObject uiObj;
 
 	public string name;
 	public int value;
 	public bool sellable;
 	public ItemType type;
 
-	public Item(GameObject obj, string name, int value, bool sellable, ItemType type) {
+	public Item(GameObject obj, GameObject uiObj, string name, int value, bool sellable, ItemType type) {
 		this.obj = obj;
+		this.uiObj = uiObj;
 		this.name = name;
 		this.value = value;
 		this.sellable = sellable;

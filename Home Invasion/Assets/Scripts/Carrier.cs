@@ -27,6 +27,7 @@ public class Carrier : MonoBehaviour {
 			//print("Picked up " + item.name);
 
 			gameMgr.items.Remove(item);
+			gameMgr.pickedItems.Add(item);
 			//gameMgr.PrintItems();
 
 			pickingUp = true;
@@ -39,6 +40,7 @@ public class Carrier : MonoBehaviour {
 		item.obj.GetComponent<BoxCollider2D>().isTrigger = false;
 
 		gameMgr.items.Add(item);
+		gameMgr.pickedItems.Remove(item);
 		gameMgr.SortItems();
 
 		item = null;
@@ -46,6 +48,7 @@ public class Carrier : MonoBehaviour {
 	}
 
 	public void RemoveItemFromScene() {
+		Destroy(item.uiObj);
 		Destroy(item.obj);
 	}
 

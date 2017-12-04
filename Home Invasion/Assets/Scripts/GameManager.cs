@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour {
 	public GameObject tempItem;
 	public bool doingSetup;
 	public List<Item> items;
+	public List<Item> pickedItems;
 
 	private Transform itemsHolder;
 	private Transform thievesHolder;
@@ -54,9 +55,13 @@ public class GameManager : MonoBehaviour {
 		spawnTimer = 0f;
 		gameOver = false;
 		items = new List<Item>();
+		pickedItems = new List<Item>();
 
 		itemsHolder = new GameObject("Items").transform;
 		thievesHolder = new GameObject("Thieves").transform;
+
+		// UI
+		uiMgr.Init();
 
 		// Add initial items
 		AddItem(tempItem, new Vector3(0, 1, 0), "Vault", 1000000, false, Item.ItemType.Vault);
@@ -69,9 +74,6 @@ public class GameManager : MonoBehaviour {
 		// Spawn
 		spawnTimer = spawnRate;
 		spawnZones = GameObject.FindGameObjectsWithTag("Respawn");
-
-		// UI
-		uiMgr.Init();
 
 		doingSetup = false;
 	}
@@ -89,7 +91,9 @@ public class GameManager : MonoBehaviour {
 		GameObject instance = Instantiate(prefab, position, Quaternion.identity);
 		instance.transform.SetParent(itemsHolder);
 
-		Item newItem = new Item(instance, name, value, sellable, type);
+		GameObject textInstance = uiMgr.AddValueUI();
+
+		Item newItem = new Item(instance, textInstance, name, value, sellable, type);
 
 		items.Add(newItem);
 		SortItems();
