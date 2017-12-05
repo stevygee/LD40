@@ -56,6 +56,9 @@ public class Carrier : MonoBehaviour {
 	}
 
 	public void Update() {
+		if( gameMgr.doingSetup || gameMgr.paused )
+			return;
+
 		if( timer >= pickUpTime ) {
 			timer = 0f;
 			pickingUp = false;

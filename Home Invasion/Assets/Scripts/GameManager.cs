@@ -11,6 +11,9 @@ public class GameManager : MonoBehaviour {
 	public static GameManager instance = null;
 	private UIManager uiMgr;
 
+	public bool paused;
+	public bool firstLaunch = true;
+
 	public float marketWorth;
 	public Item safePrefab;
 	private Item safe;
@@ -169,7 +172,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void Update() {
-		if( doingSetup )
+		if( doingSetup || paused )
 			return;
 
 		// Make money

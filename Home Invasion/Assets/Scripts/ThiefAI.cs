@@ -36,7 +36,7 @@ public class ThiefAI : MonoBehaviour {
 	}
 
 	void Update() {
-		if( !active )
+		if( !active || gameMgr.doingSetup || gameMgr.paused )
 			return;
 
 		// Choose closest and most valuable item
@@ -64,6 +64,9 @@ public class ThiefAI : MonoBehaviour {
 	}
 
 	void FixedUpdate() {
+		if( !active || gameMgr.doingSetup || gameMgr.paused )
+			return;
+
 		// State specific behaviour
 		// ---
 		float moveHorizontal = 0f;
