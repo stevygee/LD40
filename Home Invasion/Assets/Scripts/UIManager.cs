@@ -139,8 +139,9 @@ public class UIManager : MonoBehaviour {
 			item.uiObj.GetComponent<Text>().text = "$ " + item.value;
 
 			// Set position
-			Vector3 itemPos = Camera.main.WorldToScreenPoint(item.obj.GetComponent<Transform>().position);
-			item.uiObj.GetComponent<RectTransform>().position = itemPos + (Vector3.up * 28);
+			Vector3 worldPos = item.obj.GetComponent<Transform>().position + (Vector3.up * 0.75f);
+			Vector3 itemPos = Camera.main.WorldToScreenPoint(worldPos);
+			item.uiObj.GetComponent<RectTransform>().position = itemPos;
 		}
 	}
 }
