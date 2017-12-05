@@ -27,7 +27,7 @@ GameObject:
   - component: {fileID: 95237672825096166}
   m_Layer: 8
   m_Name: Thief
-  m_TagString: Untagged
+  m_TagString: Thief
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

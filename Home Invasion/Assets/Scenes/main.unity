@@ -395,7 +395,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 72629099}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 282.19, y: 193.39363, z: 0}
+  m_LocalPosition: {x: 282.19, y: 229.28365, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2059017129}
@@ -478,7 +478,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 601.1, y: 125.100006}
+  m_SizeDelta: {x: 601.1, y: 125.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &118272458
 MonoBehaviour:
@@ -1006,16 +1006,16 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 648089304}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 320, y: -193.39363, z: 0}
+  m_LocalPosition: {x: 0, y: 229.28365, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 22795095}
   m_Father: {fileID: 2059017129}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -80, y: 15}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: -15}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &648089306
@@ -1793,7 +1793,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1290377146}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -306, y: -166.39363, z: 0}
+  m_LocalPosition: {x: -306, y: -202.28365, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1471828826}
@@ -1976,25 +1976,25 @@ MonoBehaviour:
   - obj: {fileID: 1628350731576880, guid: f5e7a043986f8e3428e86e9a3b6ba0f3, type: 2}
     uiObj: {fileID: 0}
     name: TV
-    value: 5000
+    value: 8000
     sellable: 1
     type: 2
   - obj: {fileID: 1628350731576880, guid: f5e7a043986f8e3428e86e9a3b6ba0f3, type: 2}
     uiObj: {fileID: 0}
-    name: Alarm
+    name: Security System
     value: 1000
     sellable: 1
     type: 4
   - obj: {fileID: 1628350731576880, guid: f5e7a043986f8e3428e86e9a3b6ba0f3, type: 2}
     uiObj: {fileID: 0}
-    name: Model S
-    value: 200000
+    name: Sports Car
+    value: 400000
     sellable: 1
     type: 3
   - obj: {fileID: 1628350731576880, guid: f5e7a043986f8e3428e86e9a3b6ba0f3, type: 2}
     uiObj: {fileID: 0}
     name: Couch
-    value: 200
+    value: 3000
     sellable: 1
     type: 2
   contentPanel: {fileID: 1433204621}
@@ -3332,7 +3332,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2059017125}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 345.5, y: 180, z: 0}
+  m_LocalPosition: {x: 345.5, y: 211, z: 0}
   m_LocalScale: {x: 0.86375, y: 0.86375, z: 0.86375}
   m_Children:
   - {fileID: 1632333188}
